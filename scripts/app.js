@@ -1,87 +1,91 @@
-(function() {
-'use strict';
+(function () {
 
-angular.module('appModule2', [])
-    .controller('ShoppingListCheckOffController1', ShoppingListCheckOffController1)
-    .factory('ShoppingListCheckOffFactory', ShoppingListCheckOffFactory)
+  'use strict';
+  angular.module('appModule2', [])
+    .controller('ShoppingListCheckOffController1', Controller1)
+    .controller('ShoppingListCheckOffController2', Controller2)
+    .service('ShoppingListCheckOffService', ShoppingListService)
 
-    // Controller
-    ShoppingListCheckOffController1.$inject = ['ShoppingListCheckOffFactory'];
-    function ShoppingListCheckOffController1(ShoppingListCheckOffFactory) {
-        var lists = this;
-        
-        var shoppingListToBuyToBought = ShoppingListCheckOffFactory();
+  // To Buy
+  Controller1.$inject = ['ShoppingListCheckOffService'];
+  function Controller1(ShoppingListCheckOffService) {
 
-        // create obj item list with both items
-        lists.items =  {
-            toBuy: shoppingListToBuyToBought.getItems(),
-            alreadyBought: shoppingListToBuyToBought.getBoughtItems()
-        }
+    var buy = this;
 
-        lists.removeItem = function (itemIndex) {
-            shoppingListToBuyToBought.addItem(itemIndex);
-            shoppingListToBuyToBought.removeItem(itemIndex);
-        };
+    buy.items = ShoppingListCheckOffService.getItems();
+    buy.BuyItem = function (itemIndex) {
+      ShoppingListCheckOffService.removeItem(itemIndex);
+    };
 
-    }
+  }
 
-    function ShoppingListService() {
-        var service = this;
-    
-        // List of shopping items to buy
-        var items = [{
-            "name": "Pickled",
-            "quantity": 40
-          }, {
-            "name": "Osso",
-            "quantity": 27
-          }, {
-            "name": "Pecan",
-            "quantity": 34
-          }, {
-            "name": "Pistachio",
-            "quantity": 34
-          }, {
-            "name": "Wine",
-            "quantity": 38
-          }, {
-            "name": "Bagelers",
-            "quantity": 7
-          }, {
-            "name": "Juice",
-            "quantity": 36
-        }];
-        
-        // List of shopping items that bought
-        var boughtItems = [];
-
-        service.addItem = function (itemIndex) {
-            if ((items !== undefined) || (items.length !== 0 )) {
-                boughtItems.push(items[itemIndex])
-            }
-        };
-    
-        service.removeItem = function (itemIndex) {
-            if (itemIndex > -1 && itemIndex !== items.length) {
-                items.splice(itemIndex, 1);
-            }
-        };
-    
-        service.getItems = function () {
-            return items;
-        };
-
-        service.getBoughtItems = function () {
-            return boughtItems;
-        };
-    }
+  // Already Bought
+  Controller2.$inject = ['ShoppingListCheckOffService'];
+  function Controller2(ShoppingListCheckOffService) {
+    var bought = this;
+    bought.items = ShoppingListCheckOffService.getBoughtItems();
+  }
 
 
-    function ShoppingListCheckOffFactory() {
-        var factory = function () {
-          return new ShoppingListService();
-        };
-        return factory;
-    }
-  
+  function ShoppingListService() {
+
+    var service = this;
+
+    // List of shopping items to buy
+    var items = [{
+        "name": "Pickled",
+        "quantity": 40
+      },
+      {
+        "name": "Osso",
+        "quantity": 27
+      },
+      {
+        "name": "Pecan",
+        "quantity": 34
+      },
+      {
+        "name": "Pistachio",
+        "quantity": 34
+      },
+      {
+        "name": "Wine",
+        "quantity": 38
+      },
+      {
+        "name": "Bagelers",
+        "quantity": 7
+      },
+      {
+        "name": "Juice",
+        "quantity": 36
+      }
+    ];
+
+    // List of shopping items that bought
+    var boughtItems = [];
+
+    service.addItem = function (itemIndex) {
+      if ((items !== undefined) || (items.length !== 0)) {
+        boughtItems.push(items[itemIndex])
+      }
+    };
+
+    service.removeItem = function (itemIndex) {
+      if (itemIndex > -1 && itemIndex !== items.length) {
+        boughtItems.push(items[itemIndex]);
+        items.splice(itemIndex, 1);
+      }
+    };
+
+    service.getItems = function () {
+      return items;
+    };
+
+    service.getBoughtItems = function () {
+      return boughtItems;
+    };
+  }
+
+
 })();
