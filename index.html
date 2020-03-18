@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app='appModule2' lang="en">
+<html lang="en" ng-app="appModule2">
   <head>
     <title>Shopping List Check Off</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +24,7 @@
         color: green;
       }</style>
   </head>
-<body ng-app="appModule1">
+<body>
   
   <div class="container">
     <hr/>
@@ -34,28 +34,32 @@
       </a>
     </nav>
     <hr/>
-    <div class="row" ng-controller='ShoppingListCheckOffController1 as lists'>
+    <div class="row">
+
       <!-- To Buy List -->
-      <div class="col-md-6">
+      <div class="col-md-6" ng-controller="ShoppingListCheckOffController1 as Controller1">
         <h2>To Buy:</h2>
         <ul>
-          <li ng-repeat="item in lists.items.toBuy">
+          <li ng-repeat="item in Controller1.items">
             {{ item.quantity }} of {{ item.name }} 
-          <button class="btn btn-info" ng-click="lists.removeItem($index);" ><span class="glyphicon glyphicon-ok"></span> Bought</button></li>
+            <button class="btn btn-info" ng-click="Controller1.BuyItem($index);" ><span class="glyphicon glyphicon-ok"></span> Bought</button>
+          </li>
         </ul>
-        <div ng-if="lists.items.toBuy.length === 0" class="emptyMessage">Everything is bought!</div>
+        <div ng-if="Controller1.items.length === 0" class="emptyMessage">Everything is bought!</div>
       </div>
   
       <!-- Already Bought List -->
-      <div class="col-md-6">
+      <div class="col-md-6" ng-controller="ShoppingListCheckOffController2 as Controller2">
        <h2>Already Bought:</h2>
        <ul>
-         <li ng-repeat="item in lists.items.alreadyBought">
+         <li ng-repeat="item in Controller2.items">
           {{ item.quantity }} of {{ item.name }} 
          </li>
        </ul>
-       <div ng-if="lists.items.alreadyBought.length === 0" class="emptyMessage">Nothing bought yet.</div>
+       <div ng-if="Controller2.items.length === 0" class="emptyMessage">Nothing bought yet.</div>
       </div>
+
+
     </div>
   </div>
 </body>
